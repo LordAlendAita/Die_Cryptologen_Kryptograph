@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddFiles", "AddFiles", "{D568B256-4706-4BF7-99BE-78948D1C45CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonsolenExtrasBibliothek", "KonsolenExtrasBibliothek\KonsolenExtrasBibliothek.csproj", "{E0B8FA0F-E05E-421D-B499-7DA31F630D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartKryptograph", "StartKryptograph\StartKryptograph.csproj", "{1DC29409-51FD-431A-9BAF-BE3FF356BC89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KryptographBibliothek", "KryptographBibliothek\KryptographBibliothek.csproj", "{A91C4215-973C-419F-86D2-4E92536BB7FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0B8FA0F-E05E-421D-B499-7DA31F630D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0B8FA0F-E05E-421D-B499-7DA31F630D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0B8FA0F-E05E-421D-B499-7DA31F630D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0B8FA0F-E05E-421D-B499-7DA31F630D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC29409-51FD-431A-9BAF-BE3FF356BC89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC29409-51FD-431A-9BAF-BE3FF356BC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC29409-51FD-431A-9BAF-BE3FF356BC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC29409-51FD-431A-9BAF-BE3FF356BC89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A91C4215-973C-419F-86D2-4E92536BB7FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A91C4215-973C-419F-86D2-4E92536BB7FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A91C4215-973C-419F-86D2-4E92536BB7FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A91C4215-973C-419F-86D2-4E92536BB7FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DB7D295-BE23-4407-A8EF-BD64A68A3DA8}
+	EndGlobalSection
+EndGlobal
