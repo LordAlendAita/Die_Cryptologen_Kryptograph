@@ -2,7 +2,7 @@
 
 namespace KonsolenExtrasBibliothek
 {
-    public class Class1
+    public class ExtendedConsole
     {
     }
 }
