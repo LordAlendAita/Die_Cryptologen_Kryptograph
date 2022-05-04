@@ -4,5 +4,6 @@ namespace KonsolenExtrasBibliothek
 {
     public class ExtendedConsole
     {
+
     }
 }
