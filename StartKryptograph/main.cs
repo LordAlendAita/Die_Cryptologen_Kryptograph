@@ -4,9 +4,10 @@ namespace StartKryptograph
 {
     class main
     {
-        static void Main(string[] args)
+        static object Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            KryptographBibliothek.Class1.CountChar;
+            KryptographBibliothek.Class1.Counter;
         }
     }
 }
