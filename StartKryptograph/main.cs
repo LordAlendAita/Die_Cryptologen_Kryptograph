@@ -6,7 +6,9 @@ namespace StartKryptograph
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
+            KryptographBibliothek.Class1.
+            
         }
     }
 }
