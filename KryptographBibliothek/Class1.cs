@@ -9,10 +9,18 @@ namespace KryptographBibliothek
     public class Class1
     {
 
-        public class Remover()
+        public void Remover(string[] args)
         {
-            String s = "Hai";
-            s = s.Replace("i", "");
+
+        string MyString = " Big   ";
+        Console.WriteLine("Hello{0}World!", MyString);
+        string TrimString = MyString.Trim();
+        Console.WriteLine("Hello{0}World!", TrimString);
+
+
+
+        
+
         }
 
     }
