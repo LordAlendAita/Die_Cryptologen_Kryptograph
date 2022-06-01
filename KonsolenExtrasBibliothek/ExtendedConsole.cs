@@ -7,9 +7,9 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace ExtendedWinConsole // see for more information https://github.com/AngeloGrabner/ExtendedWinConsole 
+namespace ExtendedWinConsole 
 {
-    public static class ExConsole // it is not recommended to use the normal System.Console class in combination with this class
+    public static class ExConsole // it is not recommended to use the normal System.Console class in combination with this class for IO 
     {
         private static Logger _logger = new();
         private static Utility _utility;
@@ -21,12 +21,11 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
         public static int BufferLength { get { return _outputBuffer.Length; } }
         private static int _width = 0, _height = 0;
         public static int Width { get { return _width; } }
-        public static int Height { get { return _height; } }  
+        public static int Height { get { return _height; } }
         private static ushort _baseColor = 15;
         private static short _startingIndex = 0;
         public static ushort BasColor
         { get { return _baseColor; } set { if (value < 16) { _baseColor = value; } } }
-
 
 #pragma warning disable 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -85,7 +84,7 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 throw new Exception("error while setting buffer info " + Marshal.GetLastWin32Error());
             }
         }
-        public static bool SetCursorVisiblity(bool visible, int? cursorSize = null)
+        public static void SetCursorVisiblity(bool visible, int? cursorSize = null) // bug: sometimes the function fails when it is called befor any other 
         {
             CONSOLE_CURSOR_INFO CCI = new CONSOLE_CURSOR_INFO();
             if (!NativeFunc.GetConsoleCursorInfo(_outputHandle, out CCI))
@@ -97,7 +96,7 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
             CCI.bVisible = visible;
             if (cursorSize.HasValue)
             {
-                if (cursorSize.Value <= 0 || cursorSize.Value > 100)
+                if (cursorSize.Value <= 0 && cursorSize.Value > 100)
                 {
                     throw new ArgumentException("cursorSize must be between 1 an 100");
                 }
@@ -109,10 +108,10 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 throw new Exception(_logger.getLatest());
                 //return false;
             }
-            return true;
+            //return true;
 
         }
-        public static bool SetWindowSize(int width, int height, bool valueIsInCharaters = false) // value in character = true isnt working properly
+        public static void SetWindowSize(int width, int height, bool valueIsInCharaters = false) // value in character = true isnt working properly
         {
             CONSOLE_FONT_INFOEX? CFIX = new CONSOLE_FONT_INFOEX?();
             CFIX = GetFont();
@@ -130,8 +129,8 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 if (!NativeFunc.MoveWindow(_windowHandle, _windowPos.Left, _windowPos.Top, width * CFIX.Value.dwFontSize.x + 1, height * CFIX.Value.dwFontSize.y + 2, true))
                 {
                     _logger.addError("in ResizeWindow: in MoveWindow: " + Marshal.GetLastWin32Error());
-                    return false;
-                    //throw new ArgumentException(_logger.getLatest());
+                    //return false;
+                    throw new ArgumentException(_logger.getLatest());
                 }
             }
             else
@@ -139,12 +138,12 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 if (!NativeFunc.MoveWindow(_windowHandle, _windowPos.Left, _windowPos.Top, width,  height, true))
                 {
                     _logger.addError("in ResizeWindow: in MoveWindow: " + Marshal.GetLastWin32Error());
-                    return false;
-                    //throw new ArgumentException(_logger.getLatest());
+                    //return false;
+                    throw new ArgumentException(_logger.getLatest());
                 }
             }
 
-            return true;
+            //return true;
         }
         public static void MoveWindowPos(int ofsetX, int ofsetY) // win32 error: 1400 (ERROR_INVALID_WINDOW_HANDLE)
         {
@@ -327,12 +326,11 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
         {
             if (color > 15)
             {
-                color = 15;
+                color = _baseColor;
             }
             COORD tempCursorPos = _cursor;
             int i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
-            int end = _outputBuffer.Length - (_width + 1);
-            for (int j = 0; j < text.Length && i < end; i++, j++)
+            for (int j = 0; j < text.Length; i++, j++)
             {
                 if (++tempCursorPos.x == _width - 1)
                 {
@@ -344,11 +342,10 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 {
                     tempCursorPos.y++;
                     tempCursorPos.x = _startingIndex;
-                    i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
+                    i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y); // possible out of bounce?
                     if (++j == text.Length)
                         break;
                 }
-                //tempCursorPos.x++;
                 _outputBuffer[i].UnicodeChar = text[j];
                 _outputBuffer[i].Attributes = color;
             }
@@ -380,23 +377,28 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
             int i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
             for (int j = 0; j < text.Length && i < _outputBuffer.Length; i++, j++)
             {
+                if (++tempCursorPos.x == _width - 1)
+                {
+                    tempCursorPos.x = _startingIndex;
+                    tempCursorPos.y++;
+                    i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
+                }
                 if (text[j] == '\n')
                 {
                     tempCursorPos.y++;
                     tempCursorPos.x = 0;
-                    i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
+                    i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y); // possible out of bounce?
                     j++;
                 }
-                tempCursorPos.x++;
                 _outputBuffer[i].UnicodeChar = text[j];
                 _outputBuffer[i].Attributes = _baseColor;
             }
             _cursor = tempCursorPos;
             UpdateBuffer(false);
         }
-        public static void Remove(bool updateBuffer = true)
+        public static void Remove(bool dontSkipSpaceChar = false, bool updateBuffer = true) 
         {
-            while (_outputBuffer[_utility.Convert2dTo1d(_cursor.x , _cursor.y)].UnicodeChar == ' ')
+            if (dontSkipSpaceChar)
             {
                 if (--_cursor.x < 0)
                 {
@@ -404,6 +406,20 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                     if (--_cursor.y < 0)
                     {
                         _cursor.y = 0;
+                    }
+                }
+            }
+            else
+            {
+                while (_outputBuffer[_utility.Convert2dTo1d(_cursor.x, _cursor.y)].UnicodeChar == ' ')
+                {
+                    if (--_cursor.x < 0)
+                    {
+                        _cursor.x = (short)(_width - 1);
+                        if (--_cursor.y < 0)
+                        {
+                            _cursor.y = 0;
+                        }
                     }
                 }
             }
@@ -434,13 +450,9 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 }
                 for (int i = 0; i < numberOfEventsRead; i++)
                 {
-                    if (_inputRecords[i].EventType == (ushort)InputEventType.KEY_EVENT && _inputRecords[i].Event.KeyEvent.bKeyDown == false) //input buffer a a key event for key up and key down 
+                    if (_inputRecords[i].EventType == (ushort)InputEventType.KEY_EVENT && _inputRecords[i].Event.KeyEvent.bKeyDown == false) //input buffer one key event for key up and key down 
                     {
-                        if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\0' || _inputRecords[i].Event.KeyEvent.UnicodeChar == '\u0016') // \0 lands in the input buffer, if something like  a lot and we dont want it here 
-                        {
-                            continue;
-                        }
-                        else if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\u0008') // backspace
+                        if (textBuffer.Count > 0 && _inputRecords[i].Event.KeyEvent.UnicodeChar == '\b') 
                         {
                             if (displayInput)
                             {
@@ -451,6 +463,10 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                         else if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\u000d') // 0x0D is ENTER Key
                         {
                             goto ReadLineEnd;
+                        }  
+                        else if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\0' || _inputRecords[i].Event.KeyEvent.UnicodeChar == '\u0016' || _inputRecords[i].Event.KeyEvent.UnicodeChar == '\b') // \0 lands in the input buffer, if something like  a lot and we dont want it here 
+                        {
+                            continue;
                         }
                         else
                         {
@@ -468,7 +484,7 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
             WriteLine();
             return output;
         }
-        public static void WriteSubWindow(SubWindow sw)
+        public static void WriteSubWindow(SubWindow sw) 
         {
             for (int y = 0; y < sw.rect.Bottom && y + sw.rect.Top < _height; y++)
             {

@@ -7,6 +7,7 @@ namespace StartKryptograph
         static void Main(string[] args)
         {
             Menue.HauptMenue();
+            //Menue.Testing();
         }
     }
 }
