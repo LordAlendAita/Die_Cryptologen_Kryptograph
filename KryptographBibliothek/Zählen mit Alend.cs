@@ -6,43 +6,48 @@ using System.Threading.Tasks;
 
 namespace KryptographBibliothek
 {
-    public class Class1
-    {
-        public static object CountChar;
+     public class Class1
+     {
 
-        public static char[] Kürzen(char[] Wort)
-        {
-            if (Wort is null)
-            {
-                throw new ArgumentNullException(nameof(Wort));
-            }
-        }
 
-        public static int CountChar(char[] Wort, char b)
+
+        public static double CountChar(char[] Wort, char b)
         {
             int count = 0;
-            foreach (char v in Wort)
+            for (int i = 0;i< Wort.Length;i++)
             {
-                if (v == b) count = count + 1;
-                return count;
+                if (Wort[i] == b) 
+                    count++;
+                
             }
+            //return count;
+            return count/(double)Wort.Length*100;
         }
-        public static void Counter(string[] args)
+        public static Dictionary<char,double> Counter(string input)
         {
-            char[] s1 = "Ananas".ToCharArray();
-            int c;
-           
-            for (char b = ' ';b< 256;b++)
+            char[] s1 = input.ToLower().ToCharArray();
+            double c;
+            string zeichen = "abcdefghijklmnopqrstuvwxyz";
+            Dictionary<char, double> output = new();
+            for (int i = 0; i < zeichen.Length; i++)
             {
-                c = CountChar(s1, b);
-                Console.WriteLine(b + ": " + c);
+                c = CountChar(s1, zeichen[i]);
+                //Console.WriteLine(zeichen[i] + ": " + c);
 
+                if (c > 0)
+                {
 
+                    output.Add(zeichen[i], c);
+
+                }
+                   
+             
+             
             }
-
-
+             return output;
+        
         }
-    
-
-    }
+     
+     
+     }
 }

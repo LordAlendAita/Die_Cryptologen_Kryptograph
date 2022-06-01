@@ -4,10 +4,11 @@ namespace StartKryptograph
 {
     class main
     {
-        static object Main(string[] args)
+        static void Main(string[] args)
         {
-            KryptographBibliothek.Class1.CountChar;
-            KryptographBibliothek.Class1.Counter;
+            KryptographBibliothek.Class1.Counter("gjgh jgj, juhvbh");
+            int i = Convert.ToInt32(Console.ReadLine());
+            
         }
     }
 }
