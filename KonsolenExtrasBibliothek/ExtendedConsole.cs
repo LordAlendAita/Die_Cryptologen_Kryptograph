@@ -20,6 +20,8 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
         private static INPUT_RECORD[] _inputRecords = new INPUT_RECORD[5];
         public static int BufferLength { get { return _outputBuffer.Length; } }
         private static int _width = 0, _height = 0;
+        public static int Width { get { return _width; } }
+        public static int Height { get { return _height; } }  
         private static ushort _baseColor = 15;
         private static short _startingIndex = 0;
         public static ushort BasColor
@@ -367,7 +369,7 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
         {
             Write(c.ToString(), color);
         }
-        public static void Wrtie(object obj)
+        public static void Write(object obj)
         {
             Write(obj.ToString());
         }
@@ -434,7 +436,7 @@ namespace ExtendedWinConsole // see for more information https://github.com/Ange
                 {
                     if (_inputRecords[i].EventType == (ushort)InputEventType.KEY_EVENT && _inputRecords[i].Event.KeyEvent.bKeyDown == false) //input buffer a a key event for key up and key down 
                     {
-                        if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\0') // \0 lands in the input buffer, if something like  a lot and we dont want it here 
+                        if (_inputRecords[i].Event.KeyEvent.UnicodeChar == '\0' || _inputRecords[i].Event.KeyEvent.UnicodeChar == '\u0016') // \0 lands in the input buffer, if something like  a lot and we dont want it here 
                         {
                             continue;
                         }
