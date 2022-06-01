@@ -9,22 +9,14 @@ namespace KryptographBibliothek
     public class AuslesenChiffre
     {
         public static void Auslesen()
-        { 
-            static void Main(string[] args)
-            {
+        {
+            Console.WriteLine("Gib den Pfad der Chiffre an.");
+            string Chiffre = Console.ReadLine();
 
-                string Chiffre = File.ReadAllText("C:\\Users\\karim.l3\\source\\repos\\Die_Cryptologen_Kryptograph\\Chiffre.txt");
-                Console.WriteLine("{0}", Chiffre);
+            string Ausgabe = File.ReadAllText(Chiffre);
+            Console.WriteLine("{0}",Ausgabe);
+            Console.ReadLine();
 
-                //string Chiffre = File.ReadAllText(@"Chiffre.txt");
-                //Console.WriteLine("{0}", Chiffre);
-
-
-                //TextReader tr = new StreamReader(@"Chiffre.txt");
-                //string myText = tr.ReadLine();
-
-
-            }
         }
     }
 }
