@@ -13,12 +13,47 @@ namespace ExtendedWinConsole
     {
         private static Logger _logger = new();
         private static Utility _utility;
-        private static SMALL_RECT _writtenRegion = new(),_windowPos = new();
+        private static SMALL_RECT _writtenRegion = new(), _windowPos = new();
         private static SafeFileHandle _outputHandle, _inputHandle, _windowHandle;
-        private static COORD _cursor = new(0,0);
+        private static COORD _cursor = new(0, 0);
+        public static COORD Cursor
+        {
+            get
+            {
+                return _cursor;
+            }
+            set
+            {
+                if (value.y >= 0 && value.y < _height && value.x >= 0 && value.x < _width)
+                {
+                    _cursor = value;
+                }
+                else
+                {
+                    throw new ArgumentException("cursor position was outside of bounce");
+                }
+            }
+        }
         private static CHAR_INFO[] _outputBuffer;
         private static INPUT_RECORD[] _inputRecords = new INPUT_RECORD[5];
-        public static int BufferLength { get { return _outputBuffer.Length; } }
+        public static CHAR_INFO[] OutputBuffer 
+        {
+            get 
+            {
+                return _outputBuffer; 
+            }
+            set 
+            {
+                if (_outputBuffer.Length == value.Length)
+                {
+                    _outputBuffer = value;
+                }
+                else
+                {
+                    throw new ArgumentException("buffer size can not be changed here, use SetBufferSize()");
+                }
+            }
+        }
         private static int _width = 0, _height = 0;
         public static int Width { get { return _width; } }
         public static int Height { get { return _height; } }
@@ -241,17 +276,6 @@ namespace ExtendedWinConsole
                 throw new Exception("error while setting font info " + Marshal.GetLastWin32Error());
             }
 
-        }
-        public static void SetBuffer(CHAR_INFO[] buffer)
-        {
-            if (buffer.Length != _outputBuffer.Length)
-            {
-                throw new ArgumentException("buffer length is incorrect");
-            }
-            for (int i = 0; i < buffer.Length; i++)
-            {
-                _outputBuffer[i] = buffer[i];
-            }
         }
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void UpdateBuffer(bool flushBuffer = true)
@@ -538,6 +562,13 @@ namespace ExtendedWinConsole
             
             //WriteLine();
             return keyInfo;
+        }
+        public static int Get2dBufferIndex(int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < _width && y < _height)
+                return _utility.Convert2dTo1d(x, y);
+            else
+                throw new IndexOutOfRangeException("x/y must be below width/heigh and above");
         }
         public static void WriteSubWindow(SubWindow sw) 
         {
