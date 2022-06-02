@@ -60,7 +60,7 @@ namespace KryptographBibliothek
                     Thread.Sleep(50);
                     ExConsole.Remove();
                 }
-                ExConsole.Remove();
+                if (chipheredFile ) // if enter => y-- and high x 
                 //ExConsole.Write(chipheredFile.Length + fileNotFound.Length);
                 chipheredFile = ExConsole.ReadLine();
             }
