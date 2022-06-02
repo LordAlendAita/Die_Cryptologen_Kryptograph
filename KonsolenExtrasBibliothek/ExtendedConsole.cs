@@ -332,7 +332,7 @@ namespace ExtendedWinConsole
             int i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
             for (int j = 0; j < text.Length; i++, j++)
             {
-                if (++tempCursorPos.x == _width - 1)
+                if (++tempCursorPos.x == _width)
                 {
                     tempCursorPos.x = _startingIndex;
                     tempCursorPos.y++;
@@ -377,7 +377,7 @@ namespace ExtendedWinConsole
             int i = _utility.Convert2dTo1d(tempCursorPos.x, tempCursorPos.y);
             for (int j = 0; j < text.Length && i < _outputBuffer.Length; i++, j++)
             {
-                if (++tempCursorPos.x == _width - 1)
+                if (++tempCursorPos.x == _width)
                 {
                     tempCursorPos.x = _startingIndex;
                     tempCursorPos.y++;
@@ -481,6 +481,51 @@ namespace ExtendedWinConsole
             }
         ReadLineEnd:
             string output = new string(textBuffer.ToArray());
+            WriteLine();
+            return output;
+        }
+        public static ConsoleKeyInfo ReadKey(bool displayInput = false) // to be changed: return value to ConsoleKeyInfo
+        {
+            uint numberOfEventsRead = 0;
+            if (!NativeFunc.FlushConsoleInputBuffer(_inputHandle))
+            {
+                throw new Exception("win32 error: " + Marshal.GetLastWin32Error());
+            }
+            ConsoleKeyInfo keyInfo = new ConsoleKeyInfo();
+            while (true)
+            {
+                if (!NativeFunc.ReadConsoleInput(_inputHandle, _inputRecords, (uint)_inputRecords.Length, out numberOfEventsRead))
+                {
+                    throw new Exception("win32error: " + Marshal.GetLastWin32Error());
+                }
+                for (int i = 0; i < numberOfEventsRead && i < 2; i++)
+                {
+                    if (_inputRecords[i].EventType == (ushort)InputEventType.KEY_EVENT && _inputRecords[i].Event.KeyEvent.bKeyDown == false) //input buffer one key event for key up and key down 
+                    {
+                        if (displayInput)
+                        {
+                            Write(_inputRecords[i].Event.KeyEvent.UnicodeChar);
+                        }
+                        bool shift = false, alt = false, control = false;
+                        switch (_inputRecords[i].Event.KeyEvent.dwControlKeyState)
+                        {
+                            case ControlKeyState.SHIFT_PRESSED:
+                                shift = true;
+                                break;
+                            case ControlKeyState.LEFT_CTRL_PRESSED:
+                            case ControlKeyState.RIGHT_CTRL_PRESSED:
+                                control = true;
+                                break;
+
+                            default:
+                                break;                  
+                        }
+                        keyInfo = new ConsoleKeyInfo(_inputRecords[i].Event.KeyEvent.UnicodeChar, _inputRecords[i].Event.KeyEvent.wVirtualScanCode,);
+                    }
+                }
+            }
+        ReadKeyEnd:
+            
             WriteLine();
             return output;
         }

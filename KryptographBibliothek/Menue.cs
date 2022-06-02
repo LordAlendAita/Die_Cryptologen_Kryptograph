@@ -22,20 +22,23 @@ namespace KryptographBibliothek
         }
         private static void VerticalLine(char c = '\u2500', ConsoleColor color = ConsoleColor.White)
         {
-            for (int i = 0; i < ExConsole.Width - 2; i++)
+            for (int i = 0; i < ExConsole.Width-1; i++)
             {
                 ExConsole.Write(c,(ushort)color); 
             }
+            ExConsole.WriteLine();
         }
         public static void HauptMenue()
         {   
             ExConsole.SetFont(10, 20);
             short width = 100, height = 26;
             ExConsole.SetMaximumBufferSize(width, height);
-            ExConsole.SetBufferSize(width, height);
+            ExConsole.SetBufferSize((short)(width+1), height);
             ExConsole.SetWindowSize(width, height+2, true); // set window size is a bit buggy therefor the +2
             ExConsole.SetCursorVisiblity(false);
 
+            //for (int i = 0; i < 100; i++)
+            //    ExConsole.Write(i % 10);
             ExConsole.WriteLine();
             CenterText("Kryptograph", ConsoleColor.Green);
             ExConsole.WriteLine();
@@ -59,8 +62,7 @@ namespace KryptographBibliothek
                 }
                 chipheredFile = ExConsole.ReadLine();
             }
-                
-
+           
 
             ExConsole.ReadLine();
             
