@@ -26,7 +26,7 @@ namespace KryptographBibliothek
             {
                 ExConsole.Write(c,(ushort)color); 
             }
-            ExConsole.WriteLine();
+            //ExConsole.WriteLine();
         }
         public static void HauptMenue()
         {   
@@ -44,41 +44,53 @@ namespace KryptographBibliothek
             ExConsole.WriteLine();
             VerticalLine('\u2500',ConsoleColor.DarkGray);
 
-            ExConsole.Write("\nIn diesem Kryptographen wird die ");
+            ExConsole.Write("In diesem Kryptographen wird die ");
             ExConsole.Write(" Substitution ", (ushort)ConsoleColor.Red);
             ExConsole.WriteLine("benutzt.");
-
+            Thread.Sleep(500);
             ExConsole.WriteLine("Geben Sie den Pfad zur verschlüsselten Datei ein:");
-            string chipheredFile, fileNotFound = "Datei konnte nicht gefunden werde. Probier es nochmal.";
+            string chipheredFile, fileNotFound = "Datei konnte nicht gefunden werde. Drück eine taste und probier es nochmal";
             chipheredFile = ExConsole.ReadLine();
-            while (!File.Exists(chipheredFile))
+            while (!File.Exists(chipheredFile)) // a bug where pressing Enter resaults in a new line the doesnt get removed again
             {
                 ExConsole.WriteLine(fileNotFound);
-                //Thread.Sleep(1000);
-                for ( int i = 0; i < (chipheredFile.Length+fileNotFound.Length)-4; i++)
+                ExConsole.ReadKey();
+                for ( int i = 0; i < (chipheredFile.Replace(' ', '_').Length+fileNotFound.Replace(' ', '_').Length-11); i++) 
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(50);
                     ExConsole.Remove();
                 }
+                ExConsole.Remove();
+                //ExConsole.Write(chipheredFile.Length + fileNotFound.Length);
                 chipheredFile = ExConsole.ReadLine();
             }
-           
+            ExConsole.WriteLine("worked");
 
             ExConsole.ReadLine();
             
         }
-        public static void Testing()
+        public static void Testing() // purely for debuging 
         {
             ExConsole.SetFont(10, 20);
-            short width = 100, height = 25;
+            short width = 100, height = 26;
             ExConsole.SetMaximumBufferSize(width, height);
-            ExConsole.SetBufferSize(width, height);
-            ExConsole.SetWindowSize(width, height + 2, true); // set window size is a bit buggy therefor the +2
+            ExConsole.SetBufferSize((short)(width + 1), height);
+            ExConsole.SetWindowSize(width, height + 3, true); // set window size is a bit buggy therefor the +2
             ExConsole.SetCursorVisiblity(false);
-            ExConsole.Write("abcdef", 3);
-            //Thread.Sleep(500);
-            //ExConsole.Write("ABC");
-            ExConsole.ReadLine();
+            for (int i = 0; i < 10; i++)
+                if (i % 10 != 0)
+                    ExConsole.Write(i % 10, 3);
+                else
+                    ExConsole.Write(' ');
+            ExConsole.Write('\n');
+            ExConsole.ReadKey();
+            for (int i = 0; i < 10; i++)
+            {
+                ExConsole.Remove(false);
+                Thread.Sleep(200);
+            }
+
+            ExConsole.ReadKey(true);
         }
     }
 }
