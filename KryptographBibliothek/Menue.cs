@@ -66,7 +66,7 @@ namespace KryptographBibliothek
             }
             ExConsole.WriteLine("worked");
 
-            ExConsole.ReadLine();
+            ExConsole.ReadLine(); 
             
         }
         public static void Testing() // purely for debuging 
