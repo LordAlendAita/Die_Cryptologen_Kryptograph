@@ -117,7 +117,34 @@ namespace KryptographBibliothek
 
 
 //}
-        
+
+                 Console.WriteLine("____________________________");
+                 var Chiffre_sorted = from entry in tabelle_chiffre orderby entry.Value ascending select entry;
+
+
+                 foreach (KeyValuePair<string, double> kvp in Chiffre_sorted)
+{
+                 //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                 Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+
+
+
+
+}
+
+
+                 for(int i =0; i < Chiffre_sorted.Count(); i++)
+
+
+{ 
+                    string key_chiffre = Chiffre_sorted.Count(); i++)
+                 chiffre = chiffre.Replace(' ', ',');
+
+
+} 
+
+
+
         
 
          
