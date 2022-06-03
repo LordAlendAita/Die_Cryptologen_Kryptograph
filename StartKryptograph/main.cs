@@ -7,7 +7,7 @@ namespace StartKryptograph
         static void Main(string[] args)
         {
 
-            KryptographBibliothek.Entfernen.Remover("ABCDEFG", 'A');
+            Console.WriteLine(KryptographBibliothek.Entfernen.Remover("ABCDEFG", "A" ));
             
         }
     }

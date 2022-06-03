@@ -9,17 +9,12 @@ namespace KryptographBibliothek
     public class Entfernen
     {
 
-        public static string Remover(string Text, char zeichen)
+        public static string Remover(string Text, string zeichen)
         {
 
-            Console.WriteLine(zeichen);
-            Console.ReadKey();
-     
-        string NewString = Text.TrimEnd(zeichen);
-        Console.WriteLine(NewString);
-        Console.ReadKey();
+            Text = Text.Replace(zeichen, "") ;
 
-        return NewString;
+            return Text;
         }
 
     }
