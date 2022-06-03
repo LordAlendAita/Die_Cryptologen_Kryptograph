@@ -28,11 +28,11 @@ namespace KryptographBibliothek
             }
             //ExConsole.WriteLine();
         }
-        private static string GetValidFilePath(string pathToCheck)
+        private static string GetValidFilePath(string pathToCheck, string error)
         {
             while (!File.Exists(pathToCheck))
             {
-                ExConsole.WriteLine(pathToCheck);
+                ExConsole.WriteLine(error);
                 ExConsole.ReadKey();
                 COORD tempCurser = ExConsole.Cursor;
                 CHAR_INFO[] buffer = ExConsole.OutputBuffer;
@@ -73,14 +73,14 @@ namespace KryptographBibliothek
             ExConsole.WriteLine("Geben Sie den Pfad zur verschlüsselten Datei ein:");
             string cipheredFile, fileNotFound = "Datei konnte nicht gefunden werde. Drück eine taste und probier es nochmal";
             cipheredFile = ExConsole.ReadLine();
-            cipheredFile = GetValidFilePath(cipheredFile);
+            cipheredFile = GetValidFilePath(cipheredFile, fileNotFound);
 
             string cipheredText = " ";
             //cipheredText = Auslesenciffre.Auslesen(cipheredFile);
 
             ExConsole.WriteLine("Geben Sie den Pfad zur zeichentabellen Datei ein:");
             string tableFile = ExConsole.ReadLine();
-            tableFile = GetValidFilePath(tableFile);
+            tableFile = GetValidFilePath(tableFile, fileNotFound);
 
             Dictionary<char, double> table = new();
             //table = AuslesenTabelle.Auslesen(tableFile);
@@ -90,7 +90,30 @@ namespace KryptographBibliothek
             ExConsole.WriteSubWindow(displayCipheredText);
             ExConsole.UpdateBuffer(false);
 
+            { // why not working???
+                COORD tempCurser = ExConsole.Cursor;
+                CHAR_INFO[] buffer = ExConsole.OutputBuffer;
+                for (int i = ExConsole.Get2dBufferIndex(tempCurser.x, tempCurser.y); i >= ExConsole.Get2dBufferIndex(0, tempCurser.y - 2); i--)
+                {
+                    buffer[i].UnicodeChar = ' ';
+                }
+                tempCurser.y -= 2;
+                tempCurser.x = 0;
+                ExConsole.OutputBuffer = buffer;
+                ExConsole.Cursor = tempCurser;
+                ExConsole.UpdateBuffer(false); ;
+            }
             //to be added: ask users what char to remove, remove chars, zeichen zählen, zeichen ersetzen, ausgabe
+            ExConsole.WriteLine("geben sie ein alle zeichen die sie entfernen wollen ein:");
+            string listOfChartoRemove = ExConsole.ReadLine();
+            foreach (char c in listOfChartoRemove)
+            {
+                //cipheredText = Entfernen.Remover(cipheredText, c);
+                displayCipheredText.Clear();
+                displayCipheredText.Write(cipheredText);
+                ExConsole.WriteSubWindow(displayCipheredText);
+                ExConsole.UpdateBuffer(false);
+            }
 
             ExConsole.ReadKey();
         }
