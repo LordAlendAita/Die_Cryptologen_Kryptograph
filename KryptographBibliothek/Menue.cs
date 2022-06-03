@@ -59,7 +59,8 @@ namespace KryptographBibliothek
             ExConsole.SetCursorVisiblity(false);
 
             ExConsole.WriteLine();
-            CenterText("Kryptograph", ConsoleColor.Green);
+            string kryptograph = "Kryptograph";
+            CenterText(kryptograph, ConsoleColor.Green);
             ExConsole.WriteLine();
             VerticalLine('\u2500',ConsoleColor.DarkGray);
 
@@ -120,7 +121,30 @@ namespace KryptographBibliothek
 
             //string clearText = ZeichenErsetzen.Ersetzen(/*to be added arguments*/);
 
-            // add code of: @ayoubcgn
+
+            { // this here is to make Ausgabe.ausgeben() work
+                ExConsole.Clear();
+                Console.WriteLine();
+                if (Console.BufferWidth < kryptograph.Length)
+                {
+                    throw new ArgumentException("CenterText: text size must be smaler than width");
+                }
+                for (int i = 0; i < (Console.BufferWidth / 2 - (kryptograph.Length / 2)); i++)
+                {
+                    Console.Write(' ');
+                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(kryptograph);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine();
+                for (int i = 0; i < ExConsole.Width - 4; i++)
+                {
+                    Console.Write('\u2500');
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+                // add code of: @ayoubcgn
+                Console.WriteLine("some text");
+            }
 
             ExConsole.ReadKey();
         }
