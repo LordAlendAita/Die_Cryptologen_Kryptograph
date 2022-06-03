@@ -49,17 +49,15 @@ namespace KryptographBibliothek
             }
             return pathToCheck;
         }
-        public static void HauptMenue()
+        public static void HauptMenue() //to be added: zeichen ersetzen, ausgabe
         {   
             ExConsole.SetFont(10, 20);
             short width = 100, height = 26;
             ExConsole.SetMaximumBufferSize(width, height);
             ExConsole.SetBufferSize((short)(width+1), height);
-            ExConsole.SetWindowSize(width, height+3, true); // set window size is a bit buggy therefor the +2
+            ExConsole.SetWindowSize(width, height+3, true); // set window size is a bit buggy therefor the +3
             ExConsole.SetCursorVisiblity(false);
 
-            //for (int i = 0; i < 100; i++)
-            //    ExConsole.Write(i % 10);
             ExConsole.WriteLine();
             CenterText("Kryptograph", ConsoleColor.Green);
             ExConsole.WriteLine();
@@ -90,20 +88,21 @@ namespace KryptographBibliothek
             ExConsole.WriteSubWindow(displayCipheredText);
             ExConsole.UpdateBuffer(false);
 
-            { // why not working???
+            { // removes the first file path and question.
                 COORD tempCurser = ExConsole.Cursor;
                 CHAR_INFO[] buffer = ExConsole.OutputBuffer;
-                for (int i = ExConsole.Get2dBufferIndex(tempCurser.x, tempCurser.y); i >= ExConsole.Get2dBufferIndex(0, tempCurser.y - 2); i--)
+                for (int i = ExConsole.Get2dBufferIndex(ExConsole.Width-1, 6); i >= ExConsole.Get2dBufferIndex(0, 5); i--) 
                 {
                     buffer[i].UnicodeChar = ' ';
                 }
-                tempCurser.y -= 2;
+                tempCurser.y -= 4;
                 tempCurser.x = 0;
                 ExConsole.OutputBuffer = buffer;
                 ExConsole.Cursor = tempCurser;
                 ExConsole.UpdateBuffer(false); ;
             }
-            //to be added: ask users what char to remove, remove chars, zeichen zählen, zeichen ersetzen, ausgabe
+
+            Thread.Sleep(700);
             ExConsole.WriteLine("geben sie ein alle zeichen die sie entfernen wollen ein:");
             string listOfChartoRemove = ExConsole.ReadLine();
             foreach (char c in listOfChartoRemove)
@@ -113,7 +112,15 @@ namespace KryptographBibliothek
                 displayCipheredText.Write(cipheredText);
                 ExConsole.WriteSubWindow(displayCipheredText);
                 ExConsole.UpdateBuffer(false);
+                Thread.Sleep(500);
             }
+
+            Dictionary<char, double> textTable = new();
+            //textTable = Class1.Counter(cipheredText);
+
+            //string clearText = ZeichenErsetzen.Ersetzen(/*to be added arguments*/);
+
+            // add code of: @ayoubcgn
 
             ExConsole.ReadKey();
         }
