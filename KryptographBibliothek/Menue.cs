@@ -20,7 +20,7 @@ namespace KryptographBibliothek
             }
             ExConsole.WriteLine(text, (ushort)color);
         }
-        private static void HorizontaalLine(char c = '\u2500', ConsoleColor color = ConsoleColor.White)
+        private static void horizontalLine(char c = '\u2500', ConsoleColor color = ConsoleColor.White)
         {
             for (int i = 0; i < ExConsole.Width-1; i++)
             {
@@ -61,7 +61,7 @@ namespace KryptographBibliothek
             string kryptograph = "Kryptograph";
             CenterText(kryptograph, ConsoleColor.Green);
             ExConsole.WriteLine();
-            HorizontaalLine('\u2500',ConsoleColor.DarkGray);
+            horizontalLine('\u2500',ConsoleColor.DarkGray);
 
             ExConsole.Write("In diesem Kryptographen wird die ");
             ExConsole.Write(" Substitution ", (ushort)ConsoleColor.Red);
