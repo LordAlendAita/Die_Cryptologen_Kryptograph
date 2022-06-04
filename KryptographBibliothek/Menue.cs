@@ -26,7 +26,6 @@ namespace KryptographBibliothek
             {
                 ExConsole.Write(c,(ushort)color); 
             }
-            //ExConsole.WriteLine();
         }
         private static string GetValidFilePath(string pathToCheck, string error)
         {
@@ -49,7 +48,7 @@ namespace KryptographBibliothek
             }
             return pathToCheck;
         }
-        public static void HauptMenue() //to be added: zeichen ersetzen, ausgabe
+        public static void HauptMenue()
         {   
             ExConsole.SetFont(10, 20);
             short width = 100, height = 26;
@@ -147,29 +146,6 @@ namespace KryptographBibliothek
             }
 
             ExConsole.ReadKey();
-        }
-        public static void Testing() // purely for debuging 
-        {
-            ExConsole.SetFont(10, 20);
-            short width = 100, height = 26;
-            ExConsole.SetMaximumBufferSize(width, height);
-            ExConsole.SetBufferSize((short)(width + 1), height);
-            ExConsole.SetWindowSize(width, height + 3, true); // set window size is a bit buggy therefor the +2
-            ExConsole.SetCursorVisiblity(false);
-            for (int i = 0; i < 10; i++)
-                if (i % 10 != 0)
-                    ExConsole.Write(i % 10, 3);
-                else
-                    ExConsole.Write(' ');
-            ExConsole.Write('\n');
-            ExConsole.ReadKey();
-            for (int i = 0; i < 10; i++)
-            {
-                ExConsole.Remove(false);
-                Thread.Sleep(200);
-            }
-
-            ExConsole.ReadKey(true);
         }
     }
 }
